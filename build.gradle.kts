@@ -20,14 +20,8 @@ apply<KorgeGradlePlugin>()
 korge {
     id = "mariorez.starfishcollector"
     name = "Starfish Collector"
-// To enable all targets at once
 
-    //targetAll()
-
-// To enable targets based on properties/environment variables
-    //targetDefault()
-
-// To selectively enable targets
+    supportFleks()
 
     targetJvm()
     targetJs()
