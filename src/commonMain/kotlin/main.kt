@@ -7,10 +7,13 @@ import com.soywiz.korma.geom.SizeInt
 import scene.GameScene
 import kotlin.reflect.KClass
 
+const val WINDOW_WITH = 800
+const val WINDOW_HEIGHT = 600
+
 suspend fun main() = Korge(Korge.Config(module = MyModule))
 
 object MyModule : Module() {
-    override val size = SizeInt(800, 600)
+    override val size = SizeInt(WINDOW_WITH, WINDOW_HEIGHT)
     override val bgcolor = Colors.BLUE
     override val mainScene: KClass<out Scene> = GameScene::class
 
