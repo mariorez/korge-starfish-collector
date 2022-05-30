@@ -1,6 +1,7 @@
 package scene
 
 import WINDOW_HEIGHT
+import WINDOW_WITH
 import com.github.quillraven.fleks.Inject
 import com.github.quillraven.fleks.World
 import com.soywiz.korev.Key
@@ -11,6 +12,7 @@ import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
+import com.soywiz.korma.geom.SizeInt
 import component.InputComponent
 import component.PlayerComponent
 import component.RenderComponent
@@ -33,6 +35,7 @@ class GameScene : Scene() {
             system(::MovementSystem)
             system(::RenderingSystem)
 
+            inject("worldSize", SizeInt(WINDOW_WITH, WINDOW_HEIGHT))
             inject("layer0", this@sceneMain)
         }
 

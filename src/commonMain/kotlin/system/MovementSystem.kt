@@ -3,10 +3,13 @@ package system
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.Inject
 import com.github.quillraven.fleks.IteratingSystem
+import com.soywiz.korge.view.Sprite
 import com.soywiz.korma.geom.Angle
 import com.soywiz.korma.geom.Point
+import com.soywiz.korma.geom.SizeInt
 import com.soywiz.korma.math.clamp
 import component.PlayerComponent
+import component.RenderComponent
 import component.TransformComponent
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -16,7 +19,9 @@ class MovementSystem : IteratingSystem(
     allOfComponents = arrayOf(PlayerComponent::class)
 ) {
 
+    private val worldSize = Inject.dependency<SizeInt>("worldSize")
     private val transform = Inject.componentMapper<TransformComponent>()
+    private val render = Inject.componentMapper<RenderComponent>()
 
     override fun onTickEntity(entity: Entity) {
 
@@ -44,6 +49,7 @@ class MovementSystem : IteratingSystem(
             // move by
             if (velocity.x != 0.0 || velocity.y != 0.0) {
                 position.add(velocity.x * deltaTime, velocity.y * deltaTime)
+                boundToWorld(position, render[entity].sprite, worldSize)
             }
 
             // set rotation when moving
@@ -54,6 +60,17 @@ class MovementSystem : IteratingSystem(
             // reset acceleration
             accelerator.setTo(0f, 0f)
         }
+    }
+
+    private fun boundToWorld(position: Point, sprite: Sprite, worldSize: SizeInt) {
+        val middleWidth = sprite.width / 2
+        val middleHeight = sprite.height / 2
+        val posX = position.x - middleWidth
+        val posY = position.y - middleHeight
+        if (posX < 0) position.x = middleWidth
+        if (posY < 0) position.y = middleHeight
+        if (posX + sprite.width > worldSize.width) position.x = worldSize.width - middleWidth
+        if (posY + sprite.height > worldSize.height) position.y = worldSize.height - middleHeight
     }
 
     private fun setLength(point: Point, length: Double): Point {

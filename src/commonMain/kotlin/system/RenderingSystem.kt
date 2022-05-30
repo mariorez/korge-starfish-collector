@@ -14,11 +14,9 @@ class RenderingSystem : IteratingSystem(
     allOfComponents = arrayOf(TransformComponent::class, RenderComponent::class)
 ) {
 
+    private val layer0 = Inject.dependency<Container>("layer0")
     private val transform = Inject.componentMapper<TransformComponent>()
     private val render = Inject.componentMapper<RenderComponent>()
-    private val layer0 = Inject.dependency<Container>("layer0")
-
-    var updatePosition = 0.0
 
     override fun onTickEntity(entity: Entity) {
 
