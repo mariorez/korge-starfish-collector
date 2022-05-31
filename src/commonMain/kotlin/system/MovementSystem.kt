@@ -7,6 +7,7 @@ import com.soywiz.korge.view.Sprite
 import com.soywiz.korma.geom.Angle
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.SizeInt
+import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.math.clamp
 import component.PlayerComponent
 import component.RenderComponent
@@ -90,6 +91,6 @@ class MovementSystem : IteratingSystem(
     private fun getAngle(point: Point): Angle {
         var angle: Double = atan2(point.y, point.x) * (180.0 / PI)
         if (angle < 0) angle += 360.0
-        return Angle.fromDegrees(angle)
+        return angle.degrees
     }
 }
