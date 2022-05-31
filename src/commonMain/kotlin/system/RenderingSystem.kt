@@ -22,12 +22,12 @@ class RenderingSystem : IteratingSystem(
 
         val transform = transform[entity]
 
-        val sprite = render[entity].sprite.apply {
-            center()
-            position(transform.position)
-            rotation(transform.rotation)
+        render[entity].apply {
+            if (centered) sprite.center()
+            sprite.position(transform.position)
+            sprite.rotation(transform.rotation)
         }
 
-        layer0.addChild(sprite)
+        layer0.addChild(render[entity].sprite)
     }
 }

@@ -3,7 +3,6 @@ package system
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.Inject
 import com.github.quillraven.fleks.IteratingSystem
-import com.soywiz.korma.geom.Angle.Companion.ZERO
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.degrees
 import component.InputComponent
@@ -23,7 +22,7 @@ class InputSystem : IteratingSystem(
             if (isMoving(playerInput)) {
                 transform[entity].apply {
                     speedUp.setTo(acceleration, 0.0).also { speed ->
-                        if (playerInput.right) accelerator.add(speed.setToPolar(ZERO, speed.length))
+                        if (playerInput.right) accelerator.add(speed.setToPolar(0.degrees, speed.length))
                         if (playerInput.down) accelerator.add(speed.setToPolar(90.degrees, speed.length))
                         if (playerInput.left) accelerator.add(speed.setToPolar(180.degrees, speed.length))
                         if (playerInput.up) accelerator.add(speed.setToPolar(270.degrees, speed.length))

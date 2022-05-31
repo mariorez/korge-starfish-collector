@@ -13,8 +13,9 @@ const val WINDOW_HEIGHT = 600
 suspend fun main() = Korge(Korge.Config(module = MyModule))
 
 object MyModule : Module() {
+    override val title = "Starfish Collector"
+    override val bgcolor = Colors["#297dbb"]
     override val size = SizeInt(WINDOW_WITH, WINDOW_HEIGHT)
-    override val bgcolor = Colors.BLUE
     override val mainScene: KClass<out Scene> = GameScene::class
 
     override suspend fun AsyncInjector.configure() {

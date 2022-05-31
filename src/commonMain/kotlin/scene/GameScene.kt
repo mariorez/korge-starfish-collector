@@ -1,7 +1,5 @@
 package scene
 
-import WINDOW_HEIGHT
-import WINDOW_WITH
 import com.github.quillraven.fleks.Inject
 import com.github.quillraven.fleks.World
 import com.soywiz.korev.Key
@@ -25,6 +23,8 @@ class GameScene : Scene() {
 
     override suspend fun Container.sceneMain() {
 
+        val background = Sprite(resourcesVfs["water-border.jpg"].readBitmap())
+
         val world = World {
             component(::PlayerComponent)
             component(::InputComponent)
@@ -35,8 +35,8 @@ class GameScene : Scene() {
             system(::MovementSystem)
             system(::RenderingSystem)
 
-            inject("worldSize", SizeInt(WINDOW_WITH, WINDOW_HEIGHT))
             inject("layer0", this@sceneMain)
+            inject("worldSize", SizeInt(background.width.toInt(), background.height.toInt()))
         }
 
         val turtle = world.entity {
@@ -44,13 +44,26 @@ class GameScene : Scene() {
             add<InputComponent>()
             add<TransformComponent> {
                 position.x = 100.0
-                position.y = (WINDOW_HEIGHT - 100).toDouble()
+                position.y = 100.0
                 acceleration = 400.0
                 deceleration = 400.0
                 maxSpeed = 150.0
             }
             add<RenderComponent> {
                 sprite = Sprite(resourcesVfs["turtle.png"].readBitmap())
+            }
+        }
+
+        world.apply {
+            entity {
+                add<TransformComponent> {
+                    position.x = 0.0
+                    position.y = 0.0
+                }
+                add<RenderComponent> {
+                    sprite = background
+                    centered = false
+                }
             }
         }
 
