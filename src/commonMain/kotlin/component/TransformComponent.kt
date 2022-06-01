@@ -11,4 +11,6 @@ data class TransformComponent(
     var deceleration: Double = 0.0,
     var maxSpeed: Double = 0.0,
     var rotation: Angle = Angle.ZERO
-)
+) {
+    val isMoving: Boolean get() = velocity.length > 0
+}

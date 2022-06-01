@@ -23,9 +23,15 @@ class RenderingSystem : IteratingSystem(
         val transform = transform[entity]
 
         render[entity].apply {
-            if (centered) sprite.center()
-            sprite.position(transform.position)
-            sprite.rotation(transform.rotation)
+            sprite.apply {
+                if (animated) {
+                    if (transform.isMoving) playAnimationLooped(spriteDisplayTime = frameDuration)
+                    else stopAnimation()
+                }
+                if (centered) center()
+                position(transform.position)
+                rotation(transform.rotation)
+            }
             camera.addChild(sprite)
         }
     }

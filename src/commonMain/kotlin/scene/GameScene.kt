@@ -8,8 +8,11 @@ import com.soywiz.korge.input.keys
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite
+import com.soywiz.korge.view.SpriteAnimation
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.camera
+import com.soywiz.korim.atlas.Atlas
+import com.soywiz.korim.atlas.readAtlas
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.SizeInt
@@ -24,13 +27,14 @@ import system.RenderingSystem
 
 class GameScene : Scene() {
 
-    private lateinit var turtle: Entity
-    private val turtleMove: InputComponent by lazy { Inject.componentMapper<InputComponent>()[turtle] }
-
     override suspend fun Container.sceneMain() {
+
+        lateinit var turtle: Entity
+        val turtleMove: InputComponent by lazy { Inject.componentMapper<InputComponent>()[turtle] }
 
         val camera = camera {}
         val background = Sprite(resourcesVfs["water-border.jpg"].readBitmap())
+        val atlas: Atlas = resourcesVfs["starfish-collector.atlas"].readAtlas()
 
         val world = World {
             inject("camera", camera)
@@ -57,8 +61,17 @@ class GameScene : Scene() {
                     maxSpeed = 150.0
                 }
                 add<RenderComponent> {
-                    sprite = Sprite(resourcesVfs["turtle.png"].readBitmap())
+                    sprite = Sprite(
+                        SpriteAnimation(
+                            spriteMap = atlas["turtle"],
+                            rows = 1,
+                            columns = 6,
+                            spriteWidth = atlas["turtle"].width / 6,
+                            spriteHeight = atlas["turtle"].height
+                        )
+                    )
                     centered = true
+                    animated = true
                 }
             }
 

@@ -19,7 +19,7 @@ class InputSystem : IteratingSystem(
 
     override fun onTickEntity(entity: Entity) {
         input[entity].also { playerInput ->
-            if (isMoving(playerInput)) {
+            if (playerInput.isMoving) {
                 transform[entity].apply {
                     speedUp.setTo(acceleration, 0.0).also { speed ->
                         if (playerInput.right) accelerator.add(speed.setToPolar(0.degrees, speed.length))
@@ -30,9 +30,5 @@ class InputSystem : IteratingSystem(
                 }
             }
         }
-    }
-
-    private fun isMoving(input: InputComponent): Boolean {
-        return input.up || input.down || input.left || input.right
     }
 }
