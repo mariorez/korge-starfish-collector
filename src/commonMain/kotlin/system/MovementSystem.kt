@@ -40,22 +40,18 @@ class MovementSystem : IteratingSystem(
             // keep speed within set bounds
             speed = speed.clamp(0.0, maxSpeed)
 
-            // update velocity
-            if (velocity.length == 0.0) {
-                velocity.setTo(speed, 0.0)
-            } else {
+            // update velocity and rotation
+            if (velocity.length > 0) {
                 velocity = setLength(velocity, speed)
+                rotation = getAngle(velocity)
+            } else {
+                velocity.setTo(speed, 0.0)
             }
 
             // move by
             if (velocity.x != 0.0 || velocity.y != 0.0) {
                 position.add(velocity.x * deltaTime, velocity.y * deltaTime)
                 boundToWorld(position, render[entity].sprite, worldSize)
-            }
-
-            // set rotation when moving
-            if (velocity.length > 0) {
-                rotation = getAngle(velocity)
             }
 
             // reset acceleration

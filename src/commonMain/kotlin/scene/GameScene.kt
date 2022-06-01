@@ -24,7 +24,8 @@ import system.RenderingSystem
 
 class GameScene : Scene() {
 
-    lateinit var turtle: Entity
+    private lateinit var turtle: Entity
+    private val turtleMove: InputComponent by lazy { Inject.componentMapper<InputComponent>()[turtle] }
 
     override suspend fun Container.sceneMain() {
 
@@ -66,8 +67,6 @@ class GameScene : Scene() {
                 add<RenderComponent> { sprite = background }
             }
         }
-
-        val turtleMove = Inject.componentMapper<InputComponent>()[turtle]
 
         keys {
             down {

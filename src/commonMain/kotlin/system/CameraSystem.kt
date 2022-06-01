@@ -15,15 +15,16 @@ class CameraSystem : IteratingSystem(
     private val camera = Inject.dependency<Container>("camera")
     private val worldSize = Inject.dependency<SizeInt>("worldSize")
     private val transform = Inject.componentMapper<TransformComponent>()
+    private val middleX: Double = camera.width / 2
+    private val middleY: Double = camera.height / 2
+    private val worldLimitX: Double = worldSize.width - middleX
+    private val worldLimitY: Double = worldSize.height - middleY
 
     override fun onTickEntity(entity: Entity) {
 
         val playerPos = transform[entity].position
 
         camera.apply {
-            val middleX = width / 2
-            val worldLimitX = worldSize.width - middleX
-
             x = if (playerPos.x > middleX && playerPos.x < worldLimitX) {
                 -(playerPos.x - middleX)
             } else if (playerPos.x > worldLimitX) {
@@ -31,9 +32,6 @@ class CameraSystem : IteratingSystem(
             } else {
                 0.0
             }
-
-            val middleY = height / 2
-            val worldLimitY = worldSize.height - middleY
 
             y = if (playerPos.y > middleY && playerPos.y < worldLimitY) {
                 -(playerPos.y - middleY)
