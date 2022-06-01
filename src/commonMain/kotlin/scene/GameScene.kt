@@ -6,20 +6,23 @@ import com.github.quillraven.fleks.World
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.scene.Scene
+import com.soywiz.korge.tiled.readTiledMap
+import com.soywiz.korge.tiled.tiledMapView
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.SpriteAnimation
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.camera
+import com.soywiz.korge.view.image
 import com.soywiz.korim.atlas.Atlas
 import com.soywiz.korim.atlas.readAtlas
-import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.SizeInt
 import component.InputComponent
 import component.PlayerComponent
 import component.RenderComponent
 import component.TransformComponent
+import readBitmap
 import system.CameraSystem
 import system.InputSystem
 import system.MovementSystem
@@ -32,13 +35,18 @@ class GameScene : Scene() {
         lateinit var turtle: Entity
         val turtleMove: InputComponent by lazy { Inject.componentMapper<InputComponent>()[turtle] }
 
-        val camera = camera {}
-        val background = Sprite(resourcesVfs["water-border.jpg"].readBitmap())
+        val tileMap = resourcesVfs["map.tmx"].readTiledMap()
         val atlas: Atlas = resourcesVfs["starfish-collector.atlas"].readAtlas()
+
+        val camera = camera {
+            tiledMapView(tileMap) {
+                sendChildToBack(image(tiledMap.imageLayers[0].image!!.readBitmap()))
+            }
+        }
 
         val world = World {
             inject("camera", camera)
-            inject("worldSize", SizeInt(background.width.toInt(), background.height.toInt()))
+            inject("worldSize", SizeInt(tileMap.pixelWidth, tileMap.pixelHeight))
 
             component(::PlayerComponent)
             component(::InputComponent)
@@ -73,11 +81,6 @@ class GameScene : Scene() {
                     centered = true
                     animated = true
                 }
-            }
-
-            entity {
-                add<TransformComponent> { position.setTo(0, 0) }
-                add<RenderComponent> { sprite = background }
             }
         }
 
