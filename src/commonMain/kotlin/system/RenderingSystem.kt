@@ -3,7 +3,7 @@ package system
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.Inject
 import com.github.quillraven.fleks.IteratingSystem
-import com.soywiz.korge.view.Container
+import com.soywiz.korge.view.Camera
 import com.soywiz.korge.view.center
 import com.soywiz.korge.view.position
 import com.soywiz.korge.view.rotation
@@ -14,7 +14,7 @@ class RenderingSystem : IteratingSystem(
     allOfComponents = arrayOf(TransformComponent::class, RenderComponent::class)
 ) {
 
-    private val layer0 = Inject.dependency<Container>("layer0")
+    private val camera = Inject.dependency<Camera>("camera")
     private val transform = Inject.componentMapper<TransformComponent>()
     private val render = Inject.componentMapper<RenderComponent>()
 
@@ -26,8 +26,7 @@ class RenderingSystem : IteratingSystem(
             if (centered) sprite.center()
             sprite.position(transform.position)
             sprite.rotation(transform.rotation)
+            camera.addChild(sprite)
         }
-
-        layer0.addChild(render[entity].sprite)
     }
 }
