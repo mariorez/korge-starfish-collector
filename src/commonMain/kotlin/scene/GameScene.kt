@@ -11,6 +11,7 @@ import com.soywiz.korge.tiled.tiledMapView
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.SpriteAnimation
+import com.soywiz.korge.view.addTo
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.camera
 import com.soywiz.korge.view.image
@@ -77,7 +78,7 @@ class GameScene : Scene() {
                             spriteWidth = atlas["turtle"].width / 6,
                             spriteHeight = atlas["turtle"].height
                         )
-                    )
+                    ).addTo(camera)
                     centered = true
                     animated = true
                 }
